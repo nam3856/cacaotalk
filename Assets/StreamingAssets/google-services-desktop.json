@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498976391782",
+    "project_id": "cacaotalk-eec0c",
+    "storage_bucket": "cacaotalk-eec0c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498976391782:android:5f34a206f53a91b1bea3a7",
+        "android_client_info": {
+          "package_name": "com.knp.cacaotalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOgNzwtGnpWROd81jSJBgQaH6rW8jC_BU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
