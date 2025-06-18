@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class AccountEmailSpecification : ISpecification<string>
@@ -11,13 +11,13 @@ public class AccountEmailSpecification : ISpecification<string>
         // 이메일 검증
         if (string.IsNullOrEmpty(value))
         {
-            ErrorMessage = "이메일은 비어있을 수 없습니다.";
+            ErrorMessage = "이메일 - 이메일은 비어있을 수 없습니다.";
             return false;
         }
 
         if (!EmailRegex.IsMatch(value))
         {
-            ErrorMessage = "올바른 이메일 형식이 아닙니다.";
+            ErrorMessage = "이메일 - 올바른 이메일 형식이 아닙니다.";
             return false;
         }
 

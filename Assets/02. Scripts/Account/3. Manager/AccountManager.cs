@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Firestore;
 using Firebase;
 using System.Collections.Generic;
@@ -50,22 +50,43 @@ public class AccountManager : MonoBehaviour
             // Firestore에 닉네임 저장
             var db = FirebaseFirestore.DefaultInstance;
             var userData = new Dictionary<string, object>
-        {
-            { "email", email },
-            { "nickname", nickname }
-        };
+            {
+                { "email", email },
+                { "nickname", nickname }
+            };
 
             await db.Collection("users").Document(user.UserId).SetAsync(userData);
             return Result.Success();
         }
-        catch (FirebaseException fe)
+        catch (FirebaseException fae) // FirebaseAuthException으로 변경하여 AuthError에 접근
         {
-            Debug.LogError($"Firebase Error: {fe.ErrorCode} - {fe.Message}");
-            return Result.Fail("Firebase 회원가입 오류");
+            Debug.LogError($"Firebase Auth Error: {fae.ErrorCode} - {fae.Message}");
+
+            string errorMessage = "알 수 없는 회원가입 오류가 발생했습니다."; // Default error message
+
+            switch (fae.ErrorCode)
+            {
+                case (int)AuthError.EmailAlreadyInUse:
+                    errorMessage = "이미 사용 중인 이메일 주소입니다.";
+                    break;
+                case (int)AuthError.OperationNotAllowed:
+                    errorMessage = "이메일/비밀번호 로그인이 활성화되어 있지 않습니다. Firebase 콘솔에서 설정을 확인해주세요.";
+                    break;
+                case (int)AuthError.NetworkRequestFailed:
+                    errorMessage = "네트워크 연결에 실패했습니다. 인터넷 연결을 확인해주세요.";
+                    break;
+                case (int)AuthError.TooManyRequests:
+                    errorMessage = "너무 많은 요청이 발생했습니다. 잠시 후 다시 시도해주세요.";
+                    break;
+                default:
+                    errorMessage = $"회원가입 중 오류가 발생했습니다: {fae.Message}";
+                    break;
+            }
+            return Result.Fail(errorMessage);
         }
     }
 
-    public async Task<bool> TryLoginAsync(string email, string password)
+    public async Task<Result> TryLoginAsync(string email, string password)
     {
         try
         {
@@ -75,8 +96,8 @@ public class AccountManager : MonoBehaviour
 
             if (user == null)
             {
-                Debug.LogWarning("Firebase 로그인 실패: 사용자 없음");
-                return false;
+                // 이 경우는 FirebaseException에서 이미 처리될 가능성이 높지만, 혹시 모를 경우를 대비
+                return Result.Fail("로그인 실패: 사용자 정보를 가져올 수 없습니다.");
             }
 
             // Firestore에서 추가 정보 불러오기 (예: 닉네임)
@@ -93,12 +114,35 @@ public class AccountManager : MonoBehaviour
                 _myAccount = new Account(user.Email, "Unknown");
             }
 
-            return true;
+            return Result.Success(); // 로그인 성공
         }
-        catch (FirebaseException fe)
+        catch (FirebaseException fae)
         {
-            Debug.LogError($"로그인 실패: {fe.ErrorCode} - {fe.Message}");
-            return false;
+            Debug.LogError($"로그인 실패: {fae.ErrorCode} - {fae.Message}");
+
+            string errorMessage = "알 수 없는 로그인 오류가 발생했습니다.";
+            var errorCode = (AuthError)fae.ErrorCode;
+            switch (errorCode)
+            {
+                case AuthError.InvalidEmail:
+                case AuthError.WrongPassword:
+                case AuthError.UserNotFound:
+                    errorMessage = "이메일 또는 비밀번호가 올바르지 않습니다.";
+                    break;
+                case AuthError.UserDisabled:
+                    errorMessage = "이 계정은 비활성화되었습니다. 관리자에게 문의하세요.";
+                    break;
+                case AuthError.NetworkRequestFailed:
+                    errorMessage = "네트워크 연결에 실패했습니다. 인터넷 연결을 확인해주세요.";
+                    break;
+                case AuthError.TooManyRequests:
+                    errorMessage = "너무 많은 로그인 시도가 있었습니다. 잠시 후 다시 시도해주세요.";
+                    break;
+                default:
+                    errorMessage = $"로그인 중 오류가 발생했습니다: {fae.Message}";
+                    break;
+            }
+            return Result.Fail(errorMessage, fae.ErrorCode);
         }
     }
 

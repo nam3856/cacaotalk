@@ -1,10 +1,9 @@
-﻿using Firebase.Extensions;
+using Firebase.Extensions;
 using UnityEngine;
 
 public class FirebaseInitializer : MonoBehaviour
 {
     private Firebase.FirebaseApp _app;
-    [SerializeField] UserDataManager userDataManager;
     private void Start()
     {
         Init();

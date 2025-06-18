@@ -24,5 +24,3 @@ public class BoardManager : MonoBehaviour
         return posts;
     }
 }
-{
-}
