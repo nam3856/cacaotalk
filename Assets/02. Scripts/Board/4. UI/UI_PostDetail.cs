@@ -137,5 +137,9 @@ public class UI_PostDetail : MonoBehaviour
         return dt.ToString("yyyy.MM.dd HH:mm");
     }
 
-
+    public void OnClickBack()
+    {
+        BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Post"); // 게시판 씬으로 돌아가기
+    }
 }
