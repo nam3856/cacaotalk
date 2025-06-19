@@ -39,7 +39,7 @@ public class UI_PostWrite : MonoBehaviour
             return;
         }
 
-        var user = FirebaseAuth.DefaultInstance.CurrentUser;
+        var user = AccountManager.Instance.CurrentAccount;
         if (user == null)
         {
             Debug.LogError("로그인된 사용자가 없습니다.");
@@ -49,8 +49,8 @@ public class UI_PostWrite : MonoBehaviour
         PostDTO post = new PostDTO
         {
             Email = user.Email,
-            Nickname = user.DisplayName ?? "익명",
-            ImageIndex = Random.Range(0, 4), // 임시 프로필 인덱스 (0~3)
+            Nickname = user.Nickname ?? "익명",
+            ImageIndex = user.ImageIndex,
             CreatedAt = Timestamp.GetCurrentTimestamp(),
             Content = content,
             CommentCount = 0,
