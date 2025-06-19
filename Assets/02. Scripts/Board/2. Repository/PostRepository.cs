@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 public class PostRepository
 {
     private readonly CollectionReference _posts;
+    private readonly FirebaseFirestore _firestore;
     public PostRepository()
     {
         _posts = FirebaseFirestore.DefaultInstance.Collection("posts");
+        _firestore = FirebaseFirestore.DefaultInstance;
     }
 
     public async Task<PostId> AddPost(PostDTO post)
@@ -59,5 +61,17 @@ public class PostRepository
     public CollectionReference GetCollection()
     {
         return _posts;
+    }
+
+    public async Task IncrementCommentCountAsync(string postId)
+    {
+        var postRef = _firestore.Collection("posts").Document(postId);
+        await postRef.UpdateAsync("CommentCount", FieldValue.Increment(1));
+    }
+
+    public async Task DecrementCommentCountAsync(string postId)
+    {
+        var postRef = _firestore.Collection("posts").Document(postId);
+        await postRef.UpdateAsync("CommentCount", FieldValue.Increment(-1));
     }
 }

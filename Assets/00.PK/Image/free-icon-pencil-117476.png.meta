@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      free-icon-pencil-117476_0: 8832158282017312948
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
