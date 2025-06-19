@@ -11,7 +11,7 @@ public class UI_PostDetail : MonoBehaviour
     public TextMeshProUGUI NicknameText;
     public Image ProfileImage;
     public TextMeshProUGUI TimeText;
-    public ContentSetter ContentText;
+    public TextMeshProUGUI ContentText;
     public TextMeshProUGUI LikeCountText;
 
     [Header("댓글 UI")]
@@ -40,7 +40,7 @@ public class UI_PostDetail : MonoBehaviour
         _currentPost = post;
 
         NicknameText.text = post.Nickname;
-        ContentText.SetText(post.Content);
+        ContentText.text = post.Content;
         LikeCountText.text = post.LikeCount.ToString();
         TimeText.text = FormatTime(post.CreatedAt.ToDateTime());
 
@@ -73,8 +73,17 @@ public class UI_PostDetail : MonoBehaviour
         foreach (var comment in comments)
         {
             var obj = Instantiate(CommentPrefab, CommentContainer);
-            var content = obj.GetComponent<ContentSetter>();
+
+            // 텍스트 설정
+            var content = obj.GetComponentInChildren<ContentSetter>();
             content.SetText($"{comment.AuthorNickname}: {comment.Content}");
+
+            // 이미지 설정
+            var image = obj.transform.Find("ProfileImage")?.GetComponentInChildren<Image>();
+            if (image != null && comment.ImageIndex >= 0 && comment.ImageIndex < ProfileSprites.Length)
+            {
+                image.sprite = ProfileSprites[comment.ImageIndex];
+            }
         }
     }
 
