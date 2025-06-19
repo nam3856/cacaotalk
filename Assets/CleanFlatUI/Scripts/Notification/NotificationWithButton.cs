@@ -288,6 +288,7 @@ namespace RainbowArt.CleanFlatUI
 
         public void ShowNotification()
         {
+            StopAllCoroutines();
             gameObject.SetActive(true);
 
             NotificationPanel?.SetActive(true);
@@ -300,6 +301,7 @@ namespace RainbowArt.CleanFlatUI
 
         public void HideNotification()
         {
+            StopAllCoroutines();
             StartTransition(false);
             NotificationPanel?.SetActive(false);
         }
