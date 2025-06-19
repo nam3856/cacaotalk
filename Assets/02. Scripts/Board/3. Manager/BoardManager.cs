@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,13 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     // 게시글 수정
     public async Task UpdatePost(PostDTO post)
     {
+        var currentUser = Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser;
+        if (currentUser == null || currentUser.Email != post.Email)
+        {
+            Debug.LogError("게시글 수정 권한이 없습니다.");
+            return;
+        }
+
         await postRepository.UpdatePost(post);
         int index = cachedPosts.FindIndex(p => p.Id == post.Id);
         if (index >= 0)
@@ -92,6 +100,25 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     // 게시글 삭제
     public async Task DeletePost(PostId postId)
     {
+        var currentUser = FirebaseAuth.DefaultInstance.CurrentUser;
+        if (currentUser == null)
+        {
+            Debug.LogWarning("사용자가 로그인하지 않았습니다.");
+            return;
+        }
+
+        var targetPost = cachedPosts.Find(p => p.Id == postId);
+        if (targetPost == null)
+        {
+            Debug.LogWarning("삭제할 게시글을 찾을 수 없습니다.");
+            return;
+        }
+        if (targetPost.Email != currentUser.Email)
+        {
+            Debug.LogError("게시글 삭제 권한이 없습니다.");
+            return;
+        }
+
         await postRepository.DeletePost(postId);
         cachedPosts.RemoveAll(p => p.Id == postId); // 캐시에서 삭제
         OnPostDeleted?.Invoke(postId); // 이벤트 발생

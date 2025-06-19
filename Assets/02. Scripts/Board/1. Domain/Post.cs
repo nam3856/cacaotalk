@@ -35,6 +35,8 @@ public class Post
 
     public Post() { } // Firestore 역직렬화용 기본 생성자
 
+    public const int MaxContentLength = 1000;
+
     public Post(PostId id, string email, string nickname, int imageIndex, Timestamp createdAt, string content, int commentcount, int likecount)
     {
         // 아이디 검증
@@ -61,6 +63,10 @@ public class Post
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentException("게시글 내용은 비어 있을 수 없습니다.", nameof(content));
 
+        if (content.Length > MaxContentLength)
+            throw new ArgumentException($"게시글 내용은 최대 {MaxContentLength}자까지 입력할 수 있습니다.", nameof(content));
+
+
         // 코멘트 수와 좋아요 수는 음수일 수 없음
         if (commentcount < 0)
             throw new ArgumentOutOfRangeException(nameof(commentcount), "코멘트 수는 음수일 수 없습니다.");
@@ -74,7 +80,7 @@ public class Post
         Nickname = nickname;
         CreatedAt = createdAt;
         Content = content;
-        CommentCount = 0;
-        LikeCount = 0;
+        CommentCount = commentcount;
+        LikeCount = likecount;
     }
 }
