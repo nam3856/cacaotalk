@@ -46,13 +46,14 @@ public class AccountManager : MonoBehaviour
             {
                 return Result.Fail("회원가입에 실패했습니다.");
             }
-
+            int imageIndex = UnityEngine.Random.Range(0, 5);
             // Firestore에 닉네임 저장
             var db = FirebaseFirestore.DefaultInstance;
             var userData = new Dictionary<string, object>
             {
                 { "email", email },
-                { "nickname", nickname }
+                { "nickname", nickname },
+                { "imageIndex", imageIndex }
             };
 
             await db.Collection("users").Document(user.UserId).SetAsync(userData);
@@ -107,11 +108,13 @@ public class AccountManager : MonoBehaviour
             if (snapshot.Exists && snapshot.ContainsField("nickname"))
             {
                 string nickname = snapshot.GetValue<string>("nickname");
-                _myAccount = new Account(user.Email, nickname); // 비밀번호 저장 X
+                int imageIndex = snapshot.ContainsField("imageIndex")
+                ? snapshot.GetValue<int>("imageIndex") : 0;
+                _myAccount = new Account(user.Email, nickname, imageIndex);
             }
             else
             {
-                _myAccount = new Account(user.Email, "Unknown");
+                _myAccount = new Account(user.Email, "Unknown", 0);
             }
 
             return Result.Success(); // 로그인 성공
