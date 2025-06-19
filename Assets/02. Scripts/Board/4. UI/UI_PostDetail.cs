@@ -24,12 +24,10 @@ public class UI_PostDetail : MonoBehaviour
     public Sprite[] ProfileSprites; // 0~4 인덱스
 
     private PostDTO _currentPost;
-    private CommentRepository _commentRepository;
     private CommentManager _commentManager;
 
     private void Awake()
     {
-        SubmitButton.onClick.AddListener(OnClickSubmit);
         Initialize();
     }
 
@@ -39,6 +37,28 @@ public class UI_PostDetail : MonoBehaviour
         _commentManager.OnCommentsLoaded += OnCommentsLoaded;
         _commentManager.OnCommentAdded += OnCommentAdded;
         _commentManager.OnError += error => Debug.LogError(error);
+        SubmitButton.onClick.AddListener(OnClickSubmit);
+        _currentPost = BoardManager.Instance.GetSelectedPost();
+        if (_currentPost != null)
+        {
+            ShowPostAsync(_currentPost).ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                {
+                    Debug.Log("게시글 상세 정보 표시 완료");
+                }
+                else
+                {
+                    Debug.LogError("게시글 상세 정보 표시 실패: " + task.Exception);
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("현재 선택된 게시글이 없습니다.");
+        }
+
+
     }
     public async Task ShowPostAsync(PostDTO post)
     {
@@ -118,56 +138,4 @@ public class UI_PostDetail : MonoBehaviour
     }
 
 
-    private void OnGUI()
-    {
-        if(GUI.Button(new Rect(10, 10, 100, 30), "Init"))
-        {
-            Initialize();
-            Debug.Log("CommentRepository 초기화 완료");
-        }
-        if(GUI.Button(new Rect(10, 50, 100, 30), "Load Comments"))
-        {
-            if (_currentPost != null)
-            {
-
-                LoadCommentsAsync().ContinueWith(task =>
-                {
-                    if (task.IsCompletedSuccessfully)
-                    {
-                        Debug.Log("댓글 로드 완료");
-                    }
-                    else
-                    {
-                        Debug.LogError("댓글 로드 실패: " + task.Exception);
-                    }
-                });
-            }
-            else
-            {
-                Debug.LogWarning("현재 게시글이 설정되지 않았습니다.");
-            }
-        }
-        if (GUI.Button(new Rect(10, 90, 100, 30), "Show Post"))
-        {
-            ShowPostTest();
-        }
-    }
-
-    private async Task ShowPostTest()
-    {
-        PostDTO testPost = new PostDTO
-        {
-            Id = new PostId("testpost"),
-            Email = "test@test.com",
-            Nickname = "테스트!!",
-            ImageIndex = 0,
-            CreatedAt = Timestamp.GetCurrentTimestamp(),
-            Content = "안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다",
-            CommentCount = 1,
-            LikeCount = 99
-        };
-
-        await ShowPostAsync(testPost);
-        Debug.Log("테스트 게시글 표시 완료");
-    }
 }

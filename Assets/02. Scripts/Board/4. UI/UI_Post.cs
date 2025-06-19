@@ -31,7 +31,7 @@ public class UI_Post : MonoBehaviour
     public void OnClick()
     {
         BoardManager.Instance.SetSelectedPostId(post.Id);
-        SceneManager.LoadScene("PostDetail"); // 상세 보기 씬 이름
+        SceneManager.LoadScene("Post Detail (Real)"); // 상세 보기 씬 이름
     }
     private string TrimContent(string content, int maxLength)
     {
