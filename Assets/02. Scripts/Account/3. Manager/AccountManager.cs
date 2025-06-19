@@ -149,7 +149,29 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    public async Task<Result> SendPasswordResetEmailAsync(string email)
+    {
+        try
+        {
+            var auth = FirebaseAuth.DefaultInstance;
+            await auth.SendPasswordResetEmailAsync(email);
+            return Result.Success();
+        }
+        catch (FirebaseException fae)
+        {
+            Debug.LogError($"비밀번호 재설정 실패: {fae.ErrorCode} - {fae.Message}");
+            var errorCode = (AuthError)fae.ErrorCode;
 
+            string errorMessage = errorCode switch
+            {
+                AuthError.InvalidEmail => "이메일 - 유효하지 않은 이메일 주소입니다.",
+                AuthError.UserNotFound => "이메일 - 해당 이메일의 계정을 찾을 수 없습니다.",
+                _ => $"이메일 - 비밀번호 재설정 중 오류가 발생했습니다: {fae.Message}"
+            };
+
+            return Result.Fail(errorMessage, fae.ErrorCode);
+        }
+    }
 
     public string GetMyNickname() => _myAccount?.Nickname ?? string.Empty;
     public string GetMyEmail() => _myAccount?.Email ?? string.Empty;
