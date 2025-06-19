@@ -782,6 +782,7 @@ GameObject:
   - component: {fileID: 5999147451619322603}
   - component: {fileID: 1827882597317208207}
   - component: {fileID: 5551593384422552961}
+  - component: {fileID: 6324102854269741335}
   m_Layer: 5
   m_Name: UI_Post
   m_TagString: Untagged
@@ -891,7 +892,36 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1827882597317208207}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6324102854269741335}
+        m_TargetAssemblyTypeName: UI_Post, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6324102854269741335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6119959505218177558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6501c9cb6b1d4942817fbad784529e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProfileImage: {fileID: 6090462509974183215}
+  NicknameText: {fileID: 7898596910567025072}
+  DateText: {fileID: 5510783952506439992}
+  ContentPreviewText: {fileID: 4948066949686948308}
+  CommentLikeText: {fileID: 1435483873130714129}
 --- !u!1 &6168435346411570565
 GameObject:
   m_ObjectHideFlags: 0
