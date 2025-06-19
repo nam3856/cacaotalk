@@ -1,11 +1,16 @@
+using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
+
 public class BoardManager : MonoBehaviourSingleton<BoardManager>
 {
     // 게시글 저장소
     private PostRepository postRepository;
     private List<PostDTO> cachedPosts = new();
+    private DocumentSnapshot lastVisibleSnapshot = null;
 
     // 이벤트 정의
     public event Action<PostDTO> OnPostAdded;
@@ -33,6 +38,43 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     {
         cachedPosts = await postRepository.GetPosts(limit);
         return cachedPosts;
+    }
+
+    // 게시글 페이징 로드
+    public async Task<List<PostDTO>> LoadPostsPaged(int limit = 5, bool reset = false)
+    {
+        if (reset)
+        {
+            cachedPosts.Clear();
+            lastVisibleSnapshot = null; // 초기화
+        }
+
+        Query query = postRepository.GetCollection().OrderByDescending("CreatedAt").Limit(limit);
+
+        if (lastVisibleSnapshot != null)
+        {
+            query = query.StartAfter(lastVisibleSnapshot);
+        }
+
+        QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+        // Document Null 체크
+        if (snapshot == null || snapshot.Documents == null || !snapshot.Documents.Any())
+            return new List<PostDTO>();
+
+        foreach (var doc in snapshot.Documents)
+        {
+            PostDTO post = doc.ConvertTo<PostDTO>();
+            post.Id = new PostId(doc.Id); // PostId 설정
+            cachedPosts.Add(post);
+        }
+
+        if (snapshot.Documents.Count() > 0)
+        {
+            lastVisibleSnapshot = snapshot.Documents.Last(); // 마지막 문서 저장
+        }
+
+        return new List<PostDTO>(cachedPosts);
     }
 
     // 게시글 수정

@@ -55,4 +55,9 @@ public class PostRepository
     {
         await _posts.Document(postid.Value).DeleteAsync();
     }
+
+    public CollectionReference GetCollection()
+    {
+        return _posts;
+    }
 }
