@@ -361,7 +361,7 @@ PrefabInstance:
     - target: {fileID: 952288802671886709, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
       propertyPath: 'postSlots.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1317414196}
     - target: {fileID: 1398296142505867978, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
       propertyPath: m_Pivot.x
       value: 0

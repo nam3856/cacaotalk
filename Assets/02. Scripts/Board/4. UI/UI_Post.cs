@@ -26,7 +26,7 @@ public class UI_Post : MonoBehaviour
         CommentLikeText.text = $"댓글 {post.CommentCount}  ·  좋아요 {post.LikeCount}";
 
         //프로필 이미지 처리 (예: Index → Sprite 매핑)
-        ProfileImage.sprite = ProfileImageManager.Instance.GetProfileSprite(post.ImageIndex);
+        //ProfileImage.sprite = ProfileImageManager.Instance.GetProfileSprite(post.ImageIndex);
     }
     public void OnClick()
     {

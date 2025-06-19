@@ -57,7 +57,7 @@ public class UI_PostList : MonoBehaviour
 
     public void OnClickWrite()
     {
-        SceneManager.LoadScene("Post Edit");
+        SceneManager.LoadScene("Post Write");
     }
 
     public void OnClickLogOut()
