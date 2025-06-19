@@ -142,4 +142,19 @@ public class UI_PostDetail : MonoBehaviour
         BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
         UnityEngine.SceneManagement.SceneManager.LoadScene("Post"); // 게시판 씬으로 돌아가기
     }
+
+    public void OnClickOption()
+    {
+        if (_currentPost == null) return;
+        if (AccountManager.Instance.IsMyPost(_currentPost.Email))
+        {
+            // 게시글 작성자라면 수정/삭제 옵션 표시
+            //UIManager.Instance.ShowPostOptions(_currentPost.Id.Value, _currentPost.Content);
+        }
+        else
+        {
+            // 게시글 작성자가 아니라면 신고 옵션 표시
+            //UIManager.Instance.ShowReportOption(_currentPost.Id.Value);
+        }
+    }
 }
