@@ -11,7 +11,7 @@ public class UI_PostDetail : MonoBehaviour
     public TextMeshProUGUI NicknameText;
     public Image ProfileImage;
     public TextMeshProUGUI TimeText;
-    public TextMeshProUGUI ContentText;
+    public ContentSetter ContentText;
     public TextMeshProUGUI LikeCountText;
 
     [Header("댓글 UI")]
@@ -23,7 +23,7 @@ public class UI_PostDetail : MonoBehaviour
     [Header("프로필 이미지 목록")]
     public Sprite[] ProfileSprites; // 0~4 인덱스
 
-    private Post _currentPost;
+    private PostDTO _currentPost;
     private CommentRepository _commentRepository;
 
     private void Awake()
@@ -35,22 +35,33 @@ public class UI_PostDetail : MonoBehaviour
     {
         _commentRepository = new CommentRepository();
     }
-    public async Task ShowPostAsync(Post post)
+    public async Task ShowPostAsync(PostDTO post)
     {
         _currentPost = post;
 
-        // 게시글 본문 표시
         NicknameText.text = post.Nickname;
-        ContentText.text = post.Content;
+        ContentText.SetText(post.Content);
         LikeCountText.text = post.LikeCount.ToString();
         TimeText.text = FormatTime(post.CreatedAt.ToDateTime());
 
         if (post.ImageIndex >= 0 && post.ImageIndex < ProfileSprites.Length)
-        {
             ProfileImage.sprite = ProfileSprites[post.ImageIndex];
-        }
 
         await LoadCommentsAsync();
+
+        BoardManager.Instance.OnPostUpdated -= HandlePostUpdated;
+        BoardManager.Instance.OnPostUpdated += HandlePostUpdated;
+    }
+
+    private void HandlePostUpdated(PostDTO updatedPost)
+    {
+        if (_currentPost == null) return;
+        if (updatedPost.Id != _currentPost.Id) return;
+
+        Debug.Log("현재 보고 있는 게시글이 업데이트됨");
+
+        _currentPost = updatedPost;
+        LikeCountText.text = updatedPost.LikeCount.ToString();
     }
 
     private async Task LoadCommentsAsync()
@@ -62,8 +73,8 @@ public class UI_PostDetail : MonoBehaviour
         foreach (var comment in comments)
         {
             var obj = Instantiate(CommentPrefab, CommentContainer);
-            var text = obj.GetComponent<TMP_Text>();
-            text.text = $"{comment.AuthorNickname}: {comment.Content}";
+            var content = obj.GetComponent<ContentSetter>();
+            content.SetText($"{comment.AuthorNickname}: {comment.Content}");
         }
     }
 
@@ -72,7 +83,6 @@ public class UI_PostDetail : MonoBehaviour
         string content = CommentInputField.text.Trim();
         if (string.IsNullOrWhiteSpace(content)) return;
 
-        // 테스트용 정보
         string authorId = "test-user-001";
         string nickname = "경민남";
 
@@ -80,7 +90,7 @@ public class UI_PostDetail : MonoBehaviour
         await _commentRepository.AddCommentAsync(comment);
 
         CommentInputField.text = "";
-        await LoadCommentsAsync(); // 새로고침
+        await LoadCommentsAsync();
     }
 
     private string FormatTime(System.DateTime dt)
@@ -120,16 +130,25 @@ public class UI_PostDetail : MonoBehaviour
         }
         if (GUI.Button(new Rect(10, 90, 100, 30), "Show Post"))
         {
-            _currentPost = new Post("testpost", "test@test.com", "테스트!!", 0, Timestamp.GetCurrentTimestamp(), "안녕하세요 테스트입니다", 1, 99);
-            if (_currentPost != null)
-            {
-                ShowPostAsync(_currentPost);
-                Debug.Log("게시글 표시 완료");
-            }
-            else
-            {
-                Debug.LogWarning("현재 게시글이 설정되지 않았습니다.");
-            }
+            ShowPostTest();
         }
+    }
+
+    private async Task ShowPostTest()
+    {
+        PostDTO testPost = new PostDTO
+        {
+            Id = new PostId("testpost"),
+            Email = "test@test.com",
+            Nickname = "테스트!!",
+            ImageIndex = 0,
+            CreatedAt = Timestamp.GetCurrentTimestamp(),
+            Content = "안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다안녕하세요 테스트입니다",
+            CommentCount = 1,
+            LikeCount = 99
+        };
+
+        await ShowPostAsync(testPost);
+        Debug.Log("테스트 게시글 표시 완료");
     }
 }

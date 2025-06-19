@@ -45,6 +45,7 @@ public class CommentManager
         {
             await _repository.AddCommentAsync(comment);
             await _postRepository.IncrementCommentCountAsync(postId);
+            await BoardManager.Instance.RefreshPost(postId);
             OnCommentAdded?.Invoke(comment);
         }
         catch (Exception e)
