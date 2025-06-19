@@ -27,6 +27,7 @@ public class UI_InputFields
     public Tooltip PasswordErrorTooltip;
     public Tooltip NicknameErrorTooltip;
     public NotificationWithButton ErrorNotification;
+    public NotificationWithButton SuccessNotification;
 }
 
 public class UI_LoginScene : MonoBehaviour
@@ -300,7 +301,7 @@ public class UI_LoginScene : MonoBehaviour
                     LoginInputFields.ErrorNotification.ShowNotification();
                     break;
                 default:
-                    LoginInputFields.ErrorNotification.DescriptionValue = $"로그인 중 오류가 발생했습니다: {success.Message}";
+                    LoginInputFields.ErrorNotification.DescriptionValue = $"{success.Message}";
                     LoginInputFields.ErrorNotification.ShowNotification();
                     break;
             }
@@ -309,4 +310,40 @@ public class UI_LoginScene : MonoBehaviour
         LoginInputFields.ConfirmButton.interactable = true; // 버튼 활성화
         LoginInputFields.Spinner.SetActive(false); // 스피너 비활성화
     }
+
+    public void OnClickResetPassword()
+    {
+        string email = LoginInputFields.EmailInputField.text;
+
+        var emailSpec = new AccountEmailSpecification();
+        if (!emailSpec.IsSatisfiedBy(email))
+        {
+            LoginInputFields.EmailResultText.text = emailSpec.ErrorMessage;
+            LoginInputFields.EmailResultText.color = ErrorColor;
+            return;
+        }
+
+        StartCoroutine(ResetPasswordRoutine(email));
+    }
+
+    private IEnumerator ResetPasswordRoutine(string email)
+    {
+        var task = AccountManager.Instance.SendPasswordResetEmailAsync(email);
+        LoginInputFields.ConfirmButton.interactable = false; // 버튼 비활성화
+        LoginInputFields.Spinner.SetActive(true); // 스피너 활성화
+        while (!task.IsCompleted) yield return null;
+        LoginInputFields.ConfirmButton.interactable = true;
+        LoginInputFields.Spinner.SetActive(false);
+        if (task.Result.IsSuccess)
+        {
+            LoginInputFields.SuccessNotification.DescriptionValue = "비밀번호 재설정 이메일이 전송되었습니다.";
+            LoginInputFields.SuccessNotification.ShowNotification();
+        }
+        else
+        {
+            LoginInputFields.EmailResultText.text = task.Result.Message;
+            LoginInputFields.EmailResultText.color = ErrorColor;
+        }
+    }
+
 }

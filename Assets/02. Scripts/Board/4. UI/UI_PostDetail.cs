@@ -29,6 +29,7 @@ public class UI_PostDetail : MonoBehaviour
     private void Awake()
     {
         SubmitButton.onClick.AddListener(OnClickSubmit);
+        Initialize();
     }
 
     private void Initialize()
@@ -67,7 +68,10 @@ public class UI_PostDetail : MonoBehaviour
     private async Task LoadCommentsAsync()
     {
         foreach (Transform child in CommentContainer)
+        {
+            if(child.GetComponent<CommentSetter>() == null) continue;
             Destroy(child.gameObject);
+        }
 
         var comments = await _commentRepository.GetCommentsAsync(_currentPost.Id.Value);
         foreach (var comment in comments)
@@ -75,15 +79,15 @@ public class UI_PostDetail : MonoBehaviour
             var obj = Instantiate(CommentPrefab, CommentContainer);
 
             // 텍스트 설정
-            var content = obj.GetComponentInChildren<ContentSetter>();
-            content.SetText($"{comment.AuthorNickname}: {comment.Content}");
+            var content = obj.GetComponentInChildren<CommentSetter>();
 
-            // 이미지 설정
-            var image = obj.transform.Find("ProfileImage")?.GetComponentInChildren<Image>();
-            if (image != null && comment.ImageIndex >= 0 && comment.ImageIndex < ProfileSprites.Length)
+            if(comment.ImageIndex < 0 || comment.ImageIndex >= ProfileSprites.Length)
             {
-                image.sprite = ProfileSprites[comment.ImageIndex];
+                Debug.LogWarning($"Invalid image index {comment.ImageIndex} for comment by {comment.AuthorNickname}");
+                content.SetComment(comment.AuthorNickname, comment.Content, ProfileSprites[0], FormatTime(comment.CreatedAt.ToDateTime()));
+                continue;
             }
+            content.SetComment(comment.AuthorNickname, comment.Content, ProfileSprites[comment.ImageIndex], FormatTime(comment.CreatedAt.ToDateTime()));
         }
     }
 

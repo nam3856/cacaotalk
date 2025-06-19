@@ -26,7 +26,8 @@ public class FirestoreAccountRepository : IAccountRepository
         var userData = new Dictionary<string, object>
         {
             { "email", accountDto.Email },
-            { "nickname", accountDto.Nickname }
+            { "nickname", accountDto.Nickname },
+            { "imageIndex", accountDto.ImageIndex }
         };
 
         await _db.Collection("users").Document(user.UserId).SetAsync(userData);
@@ -34,7 +35,23 @@ public class FirestoreAccountRepository : IAccountRepository
 
     public async Task<AccountDTO> FindAsync(string email)
     {
-        await Task.Yield();
-        return null;
+        var user = _auth.CurrentUser;
+        if (user == null)
+        {
+            Debug.LogWarning("No user logged in.");
+            return null;
+        }
+
+        var snapshot = await _db.Collection("users").Document(user.UserId).GetSnapshotAsync();
+        if (!snapshot.Exists)
+        {
+            Debug.LogWarning("사용자 정보 없음.");
+            return null;
+        }
+
+        string nickname = snapshot.GetValue<string>("nickname");
+        int imageIndex = snapshot.ContainsField("imageIndex") ? snapshot.GetValue<int>("imageIndex") : 0;
+
+        return new AccountDTO(email, nickname, imageIndex);
     }
 }
