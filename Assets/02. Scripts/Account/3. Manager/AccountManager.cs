@@ -175,4 +175,9 @@ public class AccountManager : MonoBehaviour
 
     public string GetMyNickname() => _myAccount?.Nickname ?? string.Empty;
     public string GetMyEmail() => _myAccount?.Email ?? string.Empty;
+
+    public bool IsMyPost(string authorId)
+    {
+        return CurrentAccount != null && CurrentAccount.Email == authorId;
+    }
 }

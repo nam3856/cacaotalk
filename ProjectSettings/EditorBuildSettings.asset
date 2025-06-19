@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00.PK/Scene/Post Write.unity
     guid: 8ef38867bc10acf45b9e58ce5722e27a
+  - enabled: 1
+    path: Assets/01. Scenes/Post Detail (Real).unity
+    guid: a1cfa8a844b79c14187179adcdf55f5e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
