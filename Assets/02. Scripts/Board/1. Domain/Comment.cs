@@ -25,9 +25,12 @@ public class Comment
     [FirestoreProperty]
     public Timestamp CreatedAt { get; private set; }
 
+    [FirestoreProperty]
+    public int ImageIndex { get; private set; }
+
     public Comment() { }
 
-    public Comment(string postId, string authorId, string authorNickname, string content)
+    public Comment(string postId, string authorId, string authorNickname, string content, int imageIndex)
     {
         CommentId = Guid.NewGuid().ToString();
         PostId = postId;
@@ -35,5 +38,6 @@ public class Comment
         AuthorNickname = authorNickname;
         Content = content;
         CreatedAt = Timestamp.GetCurrentTimestamp();
+        ImageIndex = imageIndex;
     }
 }

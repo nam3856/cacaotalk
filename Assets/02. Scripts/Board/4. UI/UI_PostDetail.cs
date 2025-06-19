@@ -83,10 +83,11 @@ public class UI_PostDetail : MonoBehaviour
         string content = CommentInputField.text.Trim();
         if (string.IsNullOrWhiteSpace(content)) return;
 
-        string authorId = "test-user-001";
-        string nickname = "경민남";
+        string authorId = AccountManager.Instance.GetMyEmail();   // 유저 이메일
+        string nickname = AccountManager.Instance.GetMyNickname();
+        int imageIndex = AccountManager.Instance.CurrentAccount?.ImageIndex ?? 0;
 
-        var comment = new Comment(_currentPost.Id.Value, authorId, nickname, content);
+        var comment = new Comment(_currentPost.Id.Value, authorId, nickname, content, imageIndex);
         await _commentRepository.AddCommentAsync(comment);
 
         CommentInputField.text = "";

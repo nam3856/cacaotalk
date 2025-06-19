@@ -33,7 +33,8 @@ public class UI_Comment : MonoBehaviour
             testPostId,
             "user-123",
             "경민남",
-            "이거 댓글 기능 테스트 중입니다."
+            "이거 댓글 기능 테스트 중입니다.",
+            0
         );
 
         await _commentManager.LoadCommentsAsync(testPostId);

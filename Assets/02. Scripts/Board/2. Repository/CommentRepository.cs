@@ -60,7 +60,7 @@ public class CommentRepository
         {
             var tempComment = doc.ConvertTo<Comment>();
             comments.Add(tempComment);
-            Debug.Log(tempComment.CommentId + " " + tempComment.Content + " " + tempComment.CreatedAt.ToDateTime());
+            Debug.Log(tempComment.CommentId + " " + tempComment.Content + " " + tempComment.CreatedAt.ToDateTime() + " " + tempComment.ImageIndex);
         }
         return comments;
     }

@@ -31,7 +31,7 @@ public class CommentManager
         }
     }
 
-    public async Task AddCommentAsync(string postId, string authorId, string nickname, string content)
+    public async Task AddCommentAsync(string postId, string authorId, string nickname, string content, int imageIndex)
     {
         if (string.IsNullOrWhiteSpace(content))
         {
@@ -39,7 +39,7 @@ public class CommentManager
             return;
         }
 
-        var comment = new Comment(postId, authorId, nickname, content);
+        var comment = new Comment(postId, authorId, nickname, content, imageIndex);
 
         try
         {
