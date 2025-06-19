@@ -8,10 +8,17 @@ public readonly struct PostId : IEquatable<PostId>
     {
         if (string.IsNullOrWhiteSpace(value))
             throw new ArgumentException("PostId는 비어 있을 수 없습니다.");
+
         Value = value;
     }
 
     public static PostId NewId() => new PostId(Guid.NewGuid().ToString());
+
+    // string → PostId
+    public static implicit operator PostId(string value) => new PostId(value);
+
+    // PostId → string
+    public static implicit operator string(PostId id) => id.Value;
 
     public override string ToString() => Value;
 
