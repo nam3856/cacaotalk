@@ -22,7 +22,7 @@ public class UI_Post : MonoBehaviour
 
         NicknameText.text = post.Nickname;
         DateText.text = date;
-        ContentPreviewText.text = TrimContent(post.Content, 50);
+        ContentPreviewText.text = TrimContent(post.Content, 20);
         CommentLikeText.text = $"댓글 {post.CommentCount}  ·  좋아요 {post.LikeCount}";
 
         //프로필 이미지 처리 (예: Index → Sprite 매핑)
@@ -31,7 +31,7 @@ public class UI_Post : MonoBehaviour
     public void OnClick()
     {
         BoardManager.Instance.SetSelectedPostId(post.Id);
-        SceneManager.LoadScene("PostDetail"); // 상세 보기 씬 이름
+        SceneManager.LoadScene("CommentTest"); // 상세 보기 씬 이름
     }
     private string TrimContent(string content, int maxLength)
     {
