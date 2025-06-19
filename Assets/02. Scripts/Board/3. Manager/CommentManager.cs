@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CommentManager
 {
     private readonly CommentRepository _repository;
-
+    private readonly PostRepository _postRepository = new PostRepository();
     public event Action<List<Comment>> OnCommentsLoaded;
     public event Action<Comment> OnCommentAdded;
     public event Action<string> OnCommentDeleted;
@@ -45,6 +44,7 @@ public class CommentManager
         try
         {
             await _repository.AddCommentAsync(comment);
+            await _postRepository.IncrementCommentCountAsync(postId);
             OnCommentAdded?.Invoke(comment);
         }
         catch (Exception e)
@@ -59,6 +59,8 @@ public class CommentManager
         try
         {
             await _repository.DeleteCommentAsync(postId, commentId, requesterId);
+
+            await _postRepository.DecrementCommentCountAsync(postId);
             OnCommentDeleted?.Invoke(commentId);
         }
         catch (Exception e)
