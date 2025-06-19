@@ -8,6 +8,11 @@ public class UI_Comment : MonoBehaviour
     {
         _commentManager = new();
     }
+
+    public void Awake()
+    {
+        Initialize();
+    }
     void OnGUI()
     {
         if (GUI.Button(new Rect(10,120,150,100), "Init"))

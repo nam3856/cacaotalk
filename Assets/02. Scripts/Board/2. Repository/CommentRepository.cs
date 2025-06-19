@@ -58,7 +58,9 @@ public class CommentRepository
         List<Comment> comments = new List<Comment>();
         foreach (var doc in snapshot.Documents)
         {
-            comments.Add(doc.ConvertTo<Comment>());
+            var tempComment = doc.ConvertTo<Comment>();
+            comments.Add(tempComment);
+            Debug.Log(tempComment.CommentId + " " + tempComment.Content + " " + tempComment.CreatedAt.ToDateTime());
         }
         return comments;
     }
