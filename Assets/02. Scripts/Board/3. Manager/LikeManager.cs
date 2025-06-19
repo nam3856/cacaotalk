@@ -4,6 +4,20 @@ using System.Threading.Tasks;
 
 public class LikeManager
 {
+    private static LikeManager _instance;
+
+    public static LikeManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new LikeManager();
+            }
+            return _instance;
+        }
+    }
+
     private readonly LikeRepository repo = new LikeRepository();
     private readonly FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
 
