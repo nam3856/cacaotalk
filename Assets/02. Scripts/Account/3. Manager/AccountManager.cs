@@ -147,15 +147,6 @@ public class AccountManager : MonoBehaviour
     }
 
 
-    public string GetNicknameByPlayerId(string playerId)
-    {
-        // Firestore 저장 구조에 따라 이 메서드는 다르게 동작해야 할 수도 있음
-        var findTask = _repository.FindAsync(playerId);
-        findTask.Wait();
-
-        var saveData = findTask.Result;
-        return saveData != null ? saveData.Nickname : "Unknown";
-    }
 
     public string GetMyNickname() => _myAccount?.Nickname ?? string.Empty;
     public string GetMyEmail() => _myAccount?.Email ?? string.Empty;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,7 +85,8 @@ namespace RainbowArt.CleanFlatUI
         float offsetX = 0f;
 
         [SerializeField]
-        float offsetY = 0f;    
+        float offsetY = 0f;
+
 
         public enum Origin
         {
@@ -110,7 +111,10 @@ namespace RainbowArt.CleanFlatUI
         Button buttonSecond;    
 
         [SerializeField]
-        Button buttonThird;  
+        Button buttonThird;
+
+        [Header("Optional")]
+        public GameObject NotificationPanel;
 
         [Serializable]
         public class NotificationEvent : UnityEvent{ }
@@ -284,7 +288,9 @@ namespace RainbowArt.CleanFlatUI
 
         public void ShowNotification()
         {
-            gameObject.SetActive(true); 
+            gameObject.SetActive(true);
+
+            NotificationPanel?.SetActive(true);
             InitButtons();
             InitAnimation();                 
             UpdatePosition();
@@ -295,6 +301,7 @@ namespace RainbowArt.CleanFlatUI
         public void HideNotification()
         {
             StartTransition(false);
+            NotificationPanel?.SetActive(false);
         }
        
         void UpdatePosition()

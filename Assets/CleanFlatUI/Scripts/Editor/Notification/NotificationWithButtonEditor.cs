@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +25,8 @@ namespace RainbowArt.CleanFlatUI
         SerializedProperty onCancel;
         SerializedProperty onFirst;
         SerializedProperty onSecond;  
-        SerializedProperty onThird;           
+        SerializedProperty onThird;
+        SerializedProperty NotificationPanel;
 
         protected virtual void OnEnable()
         {
@@ -45,6 +46,7 @@ namespace RainbowArt.CleanFlatUI
             onFirst = serializedObject.FindProperty("onFirst");            
             onSecond = serializedObject.FindProperty("onSecond");
             onThird = serializedObject.FindProperty("onThird");
+            NotificationPanel = serializedObject.FindProperty("NotificationPanel");
         }
 
         public override void OnInspectorGUI()
@@ -61,8 +63,9 @@ namespace RainbowArt.CleanFlatUI
             EditorGUILayout.PropertyField(showTime);   
             EditorGUILayout.PropertyField(origin);
             EditorGUILayout.PropertyField(offsetX);      
-            EditorGUILayout.PropertyField(offsetY);               
-            if((buttonClose.objectReferenceValue != null) || (buttonFirst.objectReferenceValue != null) || (buttonSecond.objectReferenceValue != null) || (buttonThird.objectReferenceValue != null))
+            EditorGUILayout.PropertyField(offsetY);
+            EditorGUILayout.PropertyField(NotificationPanel);
+            if ((buttonClose.objectReferenceValue != null) || (buttonFirst.objectReferenceValue != null) || (buttonSecond.objectReferenceValue != null) || (buttonThird.objectReferenceValue != null))
             {
                 EditorGUILayout.Space();
             } 

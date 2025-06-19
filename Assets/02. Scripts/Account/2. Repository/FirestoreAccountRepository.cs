@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Firestore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,8 +34,7 @@ public class FirestoreAccountRepository : IAccountRepository
 
     public async Task<AccountDTO> FindAsync(string email)
     {
-        // email 기반 검색은 Firestore에서 비효율적이므로 보통 UID 기반으로 저장하고 사용
-        // 구현 필요 시 이메일 → UID 매핑 테이블 또는 Firebase Auth에서 직접 로그인 후 UID 사용
+        await Task.Yield();
         return null;
     }
 }

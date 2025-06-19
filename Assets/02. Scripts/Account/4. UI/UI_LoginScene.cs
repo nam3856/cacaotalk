@@ -44,7 +44,7 @@ public class UI_LoginScene : MonoBehaviour
     private const string PREFIX = "ID_";
     private const string SALT = "10043420";
     public Color ErrorColor = Color.red; // 에러 메시지 색상
-    private const float TransitionDuration = 0.5f; // 패널 전환 시간
+    private const float TransitionDuration = 0.3f; // 패널 전환 시간
 
     // 게임 시작하면 로그인 켜주고 회원가입은 꺼주고..
     private void Start()
@@ -191,8 +191,8 @@ public class UI_LoginScene : MonoBehaviour
                 case (int)AuthError.TooManyRequests:
                 default:
                     RegisterInputFields.ErrorNotification.DescriptionValue = result.Message;
-                    RegisterInputFields.ErrorNotification.ShowNotification();
 
+                    RegisterInputFields.ErrorNotification.ShowNotification();
                     break;
             }
 
@@ -200,6 +200,54 @@ public class UI_LoginScene : MonoBehaviour
             RegisterInputFields.Spinner.SetActive(false); // 스피너 비활성화
 
         }
+    }
+
+    public void OnChangedRegisterEmailInput()
+    {
+        if (!RegisterInputFields.EmailErrorTooltip.gameObject.activeSelf)
+        {
+            return;
+        }
+        string email = RegisterInputFields.EmailInputField.text;
+        var emailSpecification = new AccountEmailSpecification();
+        if (!emailSpecification.IsSatisfiedBy(email))
+        {
+            RegisterInputFields.EmailErrorTooltip.DescriptionValue = emailSpecification.ErrorMessage;
+            return;
+        }
+        RegisterInputFields.EmailErrorTooltip.HideTooltip();
+    }
+
+    public void OnChangedRegisterNicknameInput()
+    {
+        if (!RegisterInputFields.NicknameErrorTooltip.gameObject.activeSelf)
+        {
+            return;
+        }
+        string nickname = RegisterInputFields.NicknameInputField.text;
+        var nicknameSpecification = new AccountNicknameSpecification();
+        if (!nicknameSpecification.IsSatisfiedBy(nickname))
+        {
+            RegisterInputFields.NicknameErrorTooltip.DescriptionValue = nicknameSpecification.ErrorMessage;
+            return;
+        }
+        RegisterInputFields.NicknameErrorTooltip.HideTooltip();
+    }
+
+    public void OnChangedRegisterPasswordInput()
+    {
+        if (!RegisterInputFields.PasswordErrorTooltip.gameObject.activeSelf)
+        {
+            return;
+        }
+        string password = RegisterInputFields.PasswordInputField.text;
+        var passwordSpecification = new AccountPasswordSpecification();
+        if (!passwordSpecification.IsSatisfiedBy(password))
+        {
+            RegisterInputFields.PasswordErrorTooltip.DescriptionValue = passwordSpecification.ErrorMessage;
+            return;
+        }
+        RegisterInputFields.PasswordErrorTooltip.HideTooltip();
     }
 
 

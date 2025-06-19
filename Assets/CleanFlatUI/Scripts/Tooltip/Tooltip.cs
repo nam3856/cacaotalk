@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -69,6 +69,7 @@ namespace RainbowArt.CleanFlatUI
                 if(description != null)
                 {
                     description.text = value;
+                    UpdateHeight();
                 }  
             }
         } 
