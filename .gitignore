@@ -75,10 +75,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Assets/google-services.json.meta
 Assets/google-services.json
-Assets/04. Fonts/NanumGothic SDF.asset
-Assets/04. Fonts/NanumGothicBold SDF.asset
-Assets/04. Fonts/NanumGothicExtraBold SDF.asset
-Assets/04. Fonts/NanumGothicLight SDF.asset
 Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_10_0.so
 Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_10_0.bundle
 Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_10_0.so.meta
