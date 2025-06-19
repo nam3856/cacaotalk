@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -6,37 +6,26 @@ public class Account
 {
     public readonly string Email;
     public readonly string Nickname;
-
+    public readonly int ImageIndex;
 
     public Account(string email, string nickname)
     {
-        // 규칙을 객체로 캡슐화해서 분리한다.
-        // 그래서 도메인과 UI는 모두 "이 규칙을 만족하니?" 물으면된다.
-        // 캡슐화한 규칙: 명세(specification)
+        var emailSpec = new AccountEmailSpecification();
+        if (!emailSpec.IsSatisfiedBy(email))
+            throw new Exception(emailSpec.ErrorMessage);
 
-
-        // 이메일 검증
-        var emailSpecification = new AccountEmailSpecification();
-        if (!emailSpecification.IsSatisfiedBy(email))
-        {
-            throw new Exception(emailSpecification.ErrorMessage);
-        }
-
-        // 닉네임 검증
-        var nickNameSpecification = new AccountNicknameSpecification();
-        if (!nickNameSpecification.IsSatisfiedBy(nickname))
-        {
-            throw new Exception(nickNameSpecification.ErrorMessage);
-        }
-
+        var nickSpec = new AccountNicknameSpecification();
+        if (!nickSpec.IsSatisfiedBy(nickname))
+            throw new Exception(nickSpec.ErrorMessage);
 
         Email = email;
         Nickname = nickname;
+        ImageIndex = UnityEngine.Random.Range(0, 5); // 0~4 랜덤
     }
 
 
     public AccountDTO ToDTO()
     {
-        return new AccountDTO(Email, Nickname);
+        return new AccountDTO(Email, Nickname, ImageIndex);
     }
 }

@@ -124,6 +124,21 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
         OnPostDeleted?.Invoke(postId); // 이벤트 발생
     }
 
+    // 게시글 갱신 (UI에서 호출 가능)
+    public async Task RefreshPost(PostId postId)
+    {
+        var doc = await postRepository.GetPost(postId);
+        if (doc != null)
+        {
+            int index = cachedPosts.FindIndex(p => p.Id == postId);
+            if (index >= 0)
+            {
+                cachedPosts[index] = doc;
+                OnPostUpdated?.Invoke(doc);
+            }
+        }
+    }
+
     // 캐시된 게시글 목록 반환
     public List<PostDTO> GetCachedPosts()
     {
