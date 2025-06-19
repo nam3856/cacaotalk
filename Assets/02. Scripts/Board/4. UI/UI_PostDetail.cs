@@ -25,6 +25,7 @@ public class UI_PostDetail : MonoBehaviour
 
     private PostDTO _currentPost;
     private CommentRepository _commentRepository;
+    private CommentManager _commentManager;
 
     private void Awake()
     {
@@ -34,7 +35,10 @@ public class UI_PostDetail : MonoBehaviour
 
     private void Initialize()
     {
-        _commentRepository = new CommentRepository();
+        _commentManager = new CommentManager();
+        _commentManager.OnCommentsLoaded += OnCommentsLoaded;
+        _commentManager.OnCommentAdded += OnCommentAdded;
+        _commentManager.OnError += error => Debug.LogError(error);
     }
     public async Task ShowPostAsync(PostDTO post)
     {
@@ -69,25 +73,25 @@ public class UI_PostDetail : MonoBehaviour
     {
         foreach (Transform child in CommentContainer)
         {
-            if(child.GetComponent<CommentSetter>() == null) continue;
+            if (child.GetComponent<CommentSetter>() == null) continue;
             Destroy(child.gameObject);
         }
 
-        var comments = await _commentRepository.GetCommentsAsync(_currentPost.Id.Value);
+        await _commentManager.LoadCommentsAsync(_currentPost.Id.Value);
+    }
+
+    private void OnCommentsLoaded(List<Comment> comments)
+    {
         foreach (var comment in comments)
         {
             var obj = Instantiate(CommentPrefab, CommentContainer);
-
-            // 텍스트 설정
             var content = obj.GetComponentInChildren<CommentSetter>();
 
-            if(comment.ImageIndex < 0 || comment.ImageIndex >= ProfileSprites.Length)
-            {
-                Debug.LogWarning($"Invalid image index {comment.ImageIndex} for comment by {comment.AuthorNickname}");
-                content.SetComment(comment.AuthorNickname, comment.Content, ProfileSprites[0], FormatTime(comment.CreatedAt.ToDateTime()));
-                continue;
-            }
-            content.SetComment(comment.AuthorNickname, comment.Content, ProfileSprites[comment.ImageIndex], FormatTime(comment.CreatedAt.ToDateTime()));
+            var sprite = (comment.ImageIndex >= 0 && comment.ImageIndex < ProfileSprites.Length)
+                ? ProfileSprites[comment.ImageIndex]
+                : ProfileSprites[0];
+
+            content.SetComment(comment.AuthorNickname, comment.Content, sprite, FormatTime(comment.CreatedAt.ToDateTime()));
         }
     }
 
@@ -100,11 +104,12 @@ public class UI_PostDetail : MonoBehaviour
         string nickname = AccountManager.Instance.GetMyNickname();
         int imageIndex = AccountManager.Instance.CurrentAccount?.ImageIndex ?? 0;
 
-        var comment = new Comment(_currentPost.Id.Value, authorId, nickname, content, imageIndex);
-        await _commentRepository.AddCommentAsync(comment);
-
+        await _commentManager.AddCommentAsync(_currentPost.Id.Value, authorId, nickname, content, imageIndex);
         CommentInputField.text = "";
-        await LoadCommentsAsync();
+    }
+    private void OnCommentAdded(Comment comment)
+    {
+        LoadCommentsAsync();
     }
 
     private string FormatTime(System.DateTime dt)
