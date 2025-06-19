@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     private PostRepository postRepository;
     private List<PostDTO> cachedPosts = new();
     private DocumentSnapshot lastVisibleSnapshot = null;
+    private PostId selectedPostId;
 
     // 이벤트 정의
     public event Action<PostDTO> OnPostAdded;
@@ -106,7 +107,6 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
             Debug.LogWarning("사용자가 로그인하지 않았습니다.");
             return;
         }
-
         var targetPost = cachedPosts.Find(p => p.Id == postId);
         if (targetPost == null)
         {
@@ -150,5 +150,33 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     public PostDTO GetPostById(PostId postId)
     {
         return cachedPosts.Find(p => p.Id == postId);
+    }
+
+    public void SetSelectedPostId(PostId id)
+    {
+        if (string.IsNullOrEmpty(id.Value))
+        {
+            Debug.LogWarning("유효하지 않은 PostId가 선택되었습니다.");
+        }
+
+        selectedPostId = id;
+    }
+
+    public PostDTO GetSelectedPost()
+    {
+        if (selectedPostId == null || string.IsNullOrEmpty(selectedPostId.Value))
+        {
+            Debug.LogWarning("선택된 게시글 ID가 설정되지 않았습니다.");
+            return null;
+        }
+
+        var post = GetPostById(selectedPostId);
+
+        if (post == null)
+        {
+            Debug.LogWarning($"선택된 ID({selectedPostId.Value})에 해당하는 게시글이 캐시에 없습니다.");
+        }
+
+        return post;
     }
 }
