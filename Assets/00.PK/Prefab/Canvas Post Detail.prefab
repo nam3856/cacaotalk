@@ -314,7 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5433914847085761271}
   m_Layer: 5
-  m_Name: UI_Top Area
+  m_Name: UI_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2226,7 +2226,7 @@ GameObject:
   - component: {fileID: 6215087705134036080}
   - component: {fileID: 3763020945910308404}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: UI_Mid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
