@@ -364,6 +364,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 952288802671886709, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
+      propertyPath: contentParent
+      value: 
+      objectReference: {fileID: 1793093916}
+    - target: {fileID: 952288802671886709, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
+      propertyPath: postItemPrefab
+      value: 
+      objectReference: {fileID: 6119959505218177558, guid: af0e57999e60a8841a6fd49c6257bceb, type: 3}
+    - target: {fileID: 952288802671886709, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
       propertyPath: postSlots.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -1045,6 +1053,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!224 &1793093916 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2838133778311683760, guid: f2981cf8eafc9724597d55e6c6ffea48, type: 3}
+  m_PrefabInstance: {fileID: 1317414195}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

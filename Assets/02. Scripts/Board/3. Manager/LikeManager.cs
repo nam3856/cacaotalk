@@ -37,7 +37,7 @@ public class LikeManager
         }
         else
         {
-            await repo.AddLike(new Like(email, postId));
+            await repo.AddLike(new Like(email, postId.Value));
             await postRef.UpdateAsync("LikeCount", FieldValue.Increment(1));
             return true;
         }
@@ -48,6 +48,6 @@ public class LikeManager
         var user = FirebaseAuth.DefaultInstance.CurrentUser;
         if (user == null) return false;
 
-        return await repo.Exists(postId, user.UserId);
+        return await repo.Exists(postId, user.Email);
     }
 }

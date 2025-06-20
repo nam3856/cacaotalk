@@ -1,9 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Firebase.Firestore;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI_PostDetail : MonoBehaviour
 {
@@ -20,8 +20,16 @@ public class UI_PostDetail : MonoBehaviour
     public TMP_InputField CommentInputField;
     public Button SubmitButton;
 
+    [Header("옵션 UI")]
+    public Button DeleteButton;
+    public Button EditButton;
+
     [Header("프로필 이미지 목록")]
     public Sprite[] ProfileSprites; // 0~4 인덱스
+
+    [Header("좋아요 UI")]
+    public Toggle LikeToggle;
+    public Image CheckmarkImage;
 
     private PostDTO _currentPost;
     private CommentManager _commentManager;
@@ -38,6 +46,7 @@ public class UI_PostDetail : MonoBehaviour
         _commentManager.OnCommentAdded += OnCommentAdded;
         _commentManager.OnError += error => Debug.LogError(error);
         SubmitButton.onClick.AddListener(OnClickSubmit);
+        LikeToggle.onValueChanged.AddListener(OnLikeToggleChanged);
         _currentPost = BoardManager.Instance.GetSelectedPost();
         if (_currentPost != null)
         {
@@ -73,6 +82,7 @@ public class UI_PostDetail : MonoBehaviour
             ProfileImage.sprite = ProfileSprites[post.ImageIndex];
 
         await LoadCommentsAsync();
+        await SetupLikeToggleAsync(post);
 
         BoardManager.Instance.OnPostUpdated -= HandlePostUpdated;
         BoardManager.Instance.OnPostUpdated += HandlePostUpdated;
@@ -115,6 +125,43 @@ public class UI_PostDetail : MonoBehaviour
         }
     }
 
+    private async Task SetupLikeToggleAsync(PostDTO post)
+    {
+        // 이벤트 제거
+        LikeToggle.onValueChanged.RemoveListener(OnLikeToggleChanged);
+
+        // 현재 사용자의 좋아요 여부 확인
+        bool isLiked = await LikeManager.Instance.IsLiked(post.Id);
+
+        // 토글 상태 설정
+        LikeToggle.isOn = isLiked;
+
+        // 이벤트 다시 등록
+        LikeToggle.onValueChanged.AddListener(OnLikeToggleChanged);
+    }
+
+    //private async void OnLikeToggleChanged(bool isOn)
+    //{
+    //    // 유저가 눌렀을 때만 ToggleLike 호출
+    //    bool result = await LikeManager.Instance.ToggleLike(_currentPost.Id);
+    //    _currentPost = BoardManager.Instance.GetPostById(_currentPost.Id);
+    //    LikeCountText.text = _currentPost.LikeCount.ToString();
+    //}
+
+    private async void OnLikeToggleChanged(bool isOn)
+    {
+        if (_currentPost == null) return;
+
+        bool nowLiked = await LikeManager.Instance.ToggleLike(_currentPost.Id);
+
+        _currentPost.LikeCount += nowLiked ? 1 : -1;
+        LikeCountText.text = _currentPost.LikeCount.ToString();
+
+        BoardManager.Instance.UpdateLocalPost(_currentPost);
+    }
+
+
+
     private async void OnClickSubmit()
     {
         string content = CommentInputField.text.Trim();
@@ -139,22 +186,52 @@ public class UI_PostDetail : MonoBehaviour
 
     public void OnClickBack()
     {
-        BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
+        //BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
         UnityEngine.SceneManagement.SceneManager.LoadScene("Post"); // 게시판 씬으로 돌아가기
     }
 
-    public void OnClickOption()
+    public async void OnClickDelete()
     {
         if (_currentPost == null) return;
-        if (AccountManager.Instance.IsMyPost(_currentPost.Email))
+
+        if (!AccountManager.Instance.IsMyPost(_currentPost.Email))
         {
-            // 게시글 작성자라면 수정/삭제 옵션 표시
-            //UIManager.Instance.ShowPostOptions(_currentPost.Id.Value, _currentPost.Content);
+            Debug.LogWarning("본인 게시글만 삭제할 수 있습니다.");
+            return;
         }
-        else
+
+        bool confirm = true;
+
+        if (confirm)
         {
-            // 게시글 작성자가 아니라면 신고 옵션 표시
-            //UIManager.Instance.ShowReportOption(_currentPost.Id.Value);
+            await BoardManager.Instance.DeletePost(_currentPost.Id);
+            SceneManager.LoadScene("Post"); // 삭제 후 목록으로
         }
     }
+
+    public async void OnClickEdit()
+    {
+        if (_currentPost == null)
+        {
+            Debug.LogWarning("게시글 정보가 없습니다.");
+            return;
+        }
+
+        if (!AccountManager.Instance.IsMyPost(_currentPost.Email))
+        {
+            Debug.LogWarning("본인 게시글만 수정할 수 있습니다.");
+            return;
+        }
+
+        // 현재 게시글 ID를 BoardManager에 저장
+        BoardManager.Instance.SetSelectedPostId(_currentPost.Id);
+
+        // 선택된 게시글을 최신화해서 편집 시 최신 데이터 사용
+        await BoardManager.Instance.RefreshPost(_currentPost.Id);
+
+        // 수정 씬으로 전환
+        SceneManager.LoadScene("Post Edit");
+    }
+
+
 }

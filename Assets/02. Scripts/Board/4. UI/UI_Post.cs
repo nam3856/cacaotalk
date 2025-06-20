@@ -7,6 +7,7 @@ public class UI_Post : MonoBehaviour
 {
     [Header("UI_References")]
     public Image ProfileImage;
+    public Sprite[] ProfileSprites; // 0~4 인덱스
     public TextMeshProUGUI NicknameText;
     public TextMeshProUGUI DateText;
     public TextMeshProUGUI ContentPreviewText;
@@ -26,7 +27,8 @@ public class UI_Post : MonoBehaviour
         CommentLikeText.text = $"댓글 {post.CommentCount}  ·  좋아요 {post.LikeCount}";
 
         //프로필 이미지 처리 (예: Index → Sprite 매핑)
-        //ProfileImage.sprite = ProfileImageManager.Instance.GetProfileSprite(post.ImageIndex);
+        if (post.ImageIndex >= 0 && post.ImageIndex < ProfileSprites.Length)
+            ProfileImage.sprite = ProfileSprites[post.ImageIndex];
     }
     public void OnClick()
     {
