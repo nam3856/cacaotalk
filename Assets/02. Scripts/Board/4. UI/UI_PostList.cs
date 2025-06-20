@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,11 +6,9 @@ using UnityEngine.UI;
 public class UI_PostList : MonoBehaviour
 {
     [Header("UI_Reference")]
-    public List<UI_Post> postSlots;
+    public Transform contentParent;             // ScrollView 안의 Content
+    public GameObject postItemPrefab;           // UI_Post 프리팹
 
-    public TextMeshProUGUI pageText;
-    public Button PrevButton;
-    public Button NextButton;
     public Button WriteButton;
     public Button LogOutButton;
 
@@ -21,46 +17,36 @@ public class UI_PostList : MonoBehaviour
 
     private async void Start()
     {
-        await LoadPage(1);
-
-        PrevButton.onClick.AddListener(() => LoadPage(currentPage - 1));
-        NextButton.onClick.AddListener(() => LoadPage(currentPage + 1));
         WriteButton.onClick.AddListener(OnClickWrite);
         LogOutButton.onClick.AddListener(OnClickLogOut);
+
+        await LoadAllPosts();
     }
 
-    private async Task LoadPage(int page)
+    private async Task LoadAllPosts()
     {
-        if (page < 1) return;
-
-        // 초기화
-        foreach (var slot in postSlots)
+        // 기존 UI 제거
+        foreach (Transform child in contentParent)
         {
-            slot.gameObject.SetActive(false);
+            Destroy(child.gameObject);
         }
 
-        // 게시글 로드
-        bool isFirst = page == 1;
-        var posts = await BoardManager.Instance.LoadPostsPaged(PostsPerPage, reset: isFirst);
+        // 게시글 전체 불러오기 (예: 1000개까지)
+        var posts = await BoardManager.Instance.LoadPost(1000); // 또는 limit 없는 메서드 사용
 
-        if (posts.Count == 0 && page > 1) return;
-
-        currentPage = page;
-        pageText.text = currentPage.ToString();
-
-        for (int i = 0; i < posts.Count && i < postSlots.Count; i++)
+        foreach (var post in posts)
         {
-            postSlots[i].Setup(posts[i]);
-            postSlots[i].gameObject.SetActive(true);
+            GameObject go = Instantiate(postItemPrefab, contentParent);
+            go.GetComponent<UI_Post>().Setup(post);
         }
     }
 
-    public void OnClickWrite()
+    private void OnClickWrite()
     {
         SceneManager.LoadScene("Post Write");
     }
 
-    public void OnClickLogOut()
+    private void OnClickLogOut()
     {
         Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
         SceneManager.LoadScene("SampleScene");

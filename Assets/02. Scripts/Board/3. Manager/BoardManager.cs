@@ -2,7 +2,6 @@ using Firebase.Auth;
 using Firebase.Firestore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -43,41 +42,41 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
     }
 
     // 게시글 페이징 로드
-    public async Task<List<PostDTO>> LoadPostsPaged(int limit = 5, bool reset = false)
-    {
-        if (reset)
-        {
-            cachedPosts.Clear();
-            lastVisibleSnapshot = null; // 초기화
-        }
+    //public async Task<List<PostDTO>> LoadPostsPaged(int limit = 5, bool reset = false)
+    //{
+    //    if (reset)
+    //    {
+    //        cachedPosts.Clear();
+    //        lastVisibleSnapshot = null; // 초기화
+    //    }
 
-        Query query = postRepository.GetCollection().OrderByDescending("CreatedAt").Limit(limit);
+    //    Query query = postRepository.GetCollection().OrderByDescending("CreatedAt").Limit(limit);
 
-        if (lastVisibleSnapshot != null)
-        {
-            query = query.StartAfter(lastVisibleSnapshot);
-        }
+    //    if (lastVisibleSnapshot != null)
+    //    {
+    //        query = query.StartAfter(lastVisibleSnapshot);
+    //    }
 
-        QuerySnapshot snapshot = await query.GetSnapshotAsync();
+    //    QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
-        // Document Null 체크
-        if (snapshot == null || snapshot.Documents == null || !snapshot.Documents.Any())
-            return new List<PostDTO>();
+    //    // Document Null 체크
+    //    if (snapshot == null || snapshot.Documents == null || !snapshot.Documents.Any())
+    //        return new List<PostDTO>();
 
-        foreach (var doc in snapshot.Documents)
-        {
-            PostDTO post = doc.ConvertTo<PostDTO>();
-            post.Id = new PostId(doc.Id); // PostId 설정
-            cachedPosts.Add(post);
-        }
+    //    foreach (var doc in snapshot.Documents)
+    //    {
+    //        PostDTO post = doc.ConvertTo<PostDTO>();
+    //        post.Id = new PostId(doc.Id); // PostId 설정
+    //        cachedPosts.Add(post);
+    //    }
 
-        if (snapshot.Documents.Count() > 0)
-        {
-            lastVisibleSnapshot = snapshot.Documents.Last(); // 마지막 문서 저장
-        }
+    //    if (snapshot.Documents.Count() > 0)
+    //    {
+    //        lastVisibleSnapshot = snapshot.Documents.Last(); // 마지막 문서 저장
+    //    }
 
-        return new List<PostDTO>(cachedPosts);
-    }
+    //    return new List<PostDTO>(cachedPosts);
+    //}
 
     // 게시글 수정
     public async Task UpdatePost(PostDTO post)
@@ -154,13 +153,13 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
 
     public void SetSelectedPostId(PostId id)
     {
-        if (string.IsNullOrEmpty(id.Value))
-        {
-            Debug.LogWarning("유효하지 않은 PostId가 선택되었습니다.");
-        }
+        // null 체크만 허용하고, 빈 문자열만 막음
+        if (id != null && string.IsNullOrWhiteSpace(id.Value))
+            throw new ArgumentException("PostId는 비어 있을 수 없습니다.");
 
         selectedPostId = id;
     }
+
 
     public PostDTO GetSelectedPost()
     {

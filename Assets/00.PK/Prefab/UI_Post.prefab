@@ -969,7 +969,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2104331483744036418}
         m_TargetAssemblyTypeName: UI_Post, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1
@@ -993,7 +993,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6501c9cb6b1d4942817fbad784529e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProfileImage: {fileID: 3874319555899186745}
+  ProfileImage: {fileID: 6090462509974183215}
+  ProfileSprites:
+  - {fileID: 21300000, guid: cf9f7d9a8f3d1174fb933b04ecb33703, type: 3}
+  - {fileID: 21300000, guid: d81e904bd2a45e34a99ac6c5d58eee8b, type: 3}
+  - {fileID: 21300000, guid: ed43f9ab7ab072043bb0eafe7ee768b7, type: 3}
+  - {fileID: -855298285791758126, guid: 3e3c54a0336954b4c992df6e6a6ddc80, type: 3}
+  - {fileID: 6937817954938267909, guid: 3de0b0ecf7d4e9447a8dfecafff79b9d, type: 3}
   NicknameText: {fileID: 7898596910567025072}
   DateText: {fileID: 5510783952506439992}
   ContentPreviewText: {fileID: 4948066949686948308}

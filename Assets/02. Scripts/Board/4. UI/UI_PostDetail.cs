@@ -1,9 +1,8 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Firebase.Firestore;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_PostDetail : MonoBehaviour
 {
@@ -139,7 +138,7 @@ public class UI_PostDetail : MonoBehaviour
 
     public void OnClickBack()
     {
-        BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
+        //BoardManager.Instance.SetSelectedPostId(null); // 선택된 게시글 ID 초기화
         UnityEngine.SceneManagement.SceneManager.LoadScene("Post"); // 게시판 씬으로 돌아가기
     }
 

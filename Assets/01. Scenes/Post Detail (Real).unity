@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &346831790 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 991752033091340262, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
-  m_PrefabInstance: {fileID: 2666156994165970854}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &446530586
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NicknameText: {fileID: 1562634126}
-  ProfileImage: {fileID: 346831790}
+  ProfileImage: {fileID: 2666156994165970856}
   TimeText: {fileID: 1690626251}
   ContentText: {fileID: 1043746268}
   LikeCountText: {fileID: 771680991}
@@ -1257,6 +1246,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5433914847085761271, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
   m_PrefabInstance: {fileID: 2666156994165970854}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2666156994165970856 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7599773394887172421, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
+  m_PrefabInstance: {fileID: 2666156994165970854}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
