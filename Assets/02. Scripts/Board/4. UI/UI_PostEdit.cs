@@ -32,7 +32,7 @@ public class UI_PostEdit : MonoBehaviour
 
     private void OnCancel()
     {
-        SceneManager.LoadScene("PostDetail");
+        SceneManager.LoadScene("Post Detail (Real)");
     }
 
     private async void OnSubmit()

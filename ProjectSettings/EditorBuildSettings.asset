@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00.PK/Scene/Post.unity
     guid: e272eb810d14d7a41aa94aca05f47444
-  - enabled: 1
+  - enabled: 0
     path: Assets/00.PK/Scene/Post Detail.unity
     guid: d3d8e951fb5973b4c9a52e9f14d7dde8
   - enabled: 1

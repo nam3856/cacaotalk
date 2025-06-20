@@ -394,6 +394,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Edit
       objectReference: {fileID: 0}
+    - target: {fileID: 2132868357071317365, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_text
+      value: "\uAE00 \uC218\uC815\uD558\uAE30\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941527498455799005, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_LineType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3979727157921407951, guid: e207cac127d8ed34693721823aead11c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -473,6 +481,22 @@ PrefabInstance:
     - target: {fileID: 3979727157921407951, guid: e207cac127d8ed34693721823aead11c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5759722776261784284, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5759722776261784284, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5759722776261784284, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1914043114}
+    - target: {fileID: 5759722776261784284, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
