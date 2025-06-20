@@ -1,4 +1,3 @@
-using Firebase.Auth;
 using Firebase.Firestore;
 using TMPro;
 using UnityEngine;
@@ -27,15 +26,10 @@ public class UI_PostWrite : MonoBehaviour
     {
         string content = contentInput.text.Trim();
 
-        if (string.IsNullOrEmpty(content))
+        var contentSpec = new PostContentSpecificaion();
+        if (!contentSpec.IsSatisfiedBy(content))
         {
-            Debug.LogWarning("내용을 입력해주세요.");
-            return;
-        }
-
-        if (content.Length > Post.MaxContentLength)
-        {
-            Debug.LogWarning($"내용은 {Post.MaxContentLength}자를 넘을 수 없습니다.");
+            Debug.LogWarning(contentSpec.ErrorMessage);
             return;
         }
 
