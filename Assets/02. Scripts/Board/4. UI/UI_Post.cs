@@ -35,9 +35,26 @@ public class UI_Post : MonoBehaviour
         BoardManager.Instance.SetSelectedPostId(post.Id);
         SceneManager.LoadScene("Post Detail (Real)"); // 상세 보기 씬 이름
     }
-    private string TrimContent(string content, int maxLength)
+    private string TrimContent(string content, int maxLineLength)
     {
         if (string.IsNullOrWhiteSpace(content)) return "";
-        return content.Length > maxLength ? content.Substring(0, maxLength) + "..." : content;
+
+        // 줄바꿈으로 분리
+        string[] lines = content.Split('\n');
+        string firstLine = lines[0];
+
+        // 첫 줄 자르기
+        string trimmed = firstLine.Length > maxLineLength
+            ? firstLine.Substring(0, maxLineLength) + "..."
+            : firstLine;
+
+        // 만약 두 번째 줄 이상이 존재한다면 무조건 ... 붙이기 (이미 ... 있으면 중복 방지)
+        if (lines.Length > 1 && !trimmed.EndsWith("..."))
+        {
+            trimmed += "...";
+        }
+
+        return trimmed;
     }
+
 }
