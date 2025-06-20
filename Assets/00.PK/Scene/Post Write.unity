@@ -394,6 +394,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Edit
       objectReference: {fileID: 0}
+    - target: {fileID: 3941527498455799005, guid: e207cac127d8ed34693721823aead11c, type: 3}
+      propertyPath: m_LineType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3979727157921407951, guid: e207cac127d8ed34693721823aead11c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
