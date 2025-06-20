@@ -8,9 +8,6 @@ public class PostDTO
 
     private string _id;
 
-    [FirestoreProperty(Name = "__do_not_store_postid_in_firestore__")]
-    private string FireStoreIgnore_Id => null;
-
     public PostId Id
     {
         get => new PostId(_id);
