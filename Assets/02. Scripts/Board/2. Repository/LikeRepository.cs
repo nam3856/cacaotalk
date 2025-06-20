@@ -11,9 +11,9 @@ public class LikeRepository
         return _db.Collection("likes").Document($"{postId}_{email}");
     }
 
-    public async Task<bool> Exists(PostId postId, string userId)
+    public async Task<bool> Exists(PostId postId, string email)
     {
-        var snapshot = await GetLikeRef(postId, userId).GetSnapshotAsync();
+        var snapshot = await GetLikeRef(postId, email).GetSnapshotAsync();
         return snapshot.Exists;
     }
 
