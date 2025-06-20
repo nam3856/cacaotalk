@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_PostDetail : MonoBehaviour
@@ -18,6 +19,10 @@ public class UI_PostDetail : MonoBehaviour
     public GameObject CommentPrefab;
     public TMP_InputField CommentInputField;
     public Button SubmitButton;
+
+    [Header("옵션 UI")]
+    public Button DeleteButton;
+    public Button EditButton;
 
     [Header("프로필 이미지 목록")]
     public Sprite[] ProfileSprites; // 0~4 인덱스
@@ -142,18 +147,48 @@ public class UI_PostDetail : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Post"); // 게시판 씬으로 돌아가기
     }
 
-    public void OnClickOption()
+    public async void OnClickDelete()
     {
         if (_currentPost == null) return;
-        if (AccountManager.Instance.IsMyPost(_currentPost.Email))
+
+        if (!AccountManager.Instance.IsMyPost(_currentPost.Email))
         {
-            // 게시글 작성자라면 수정/삭제 옵션 표시
-            //UIManager.Instance.ShowPostOptions(_currentPost.Id.Value, _currentPost.Content);
+            Debug.LogWarning("본인 게시글만 삭제할 수 있습니다.");
+            return;
         }
-        else
+
+        bool confirm = true;
+
+        if (confirm)
         {
-            // 게시글 작성자가 아니라면 신고 옵션 표시
-            //UIManager.Instance.ShowReportOption(_currentPost.Id.Value);
+            await BoardManager.Instance.DeletePost(_currentPost.Id);
+            SceneManager.LoadScene("Post"); // 삭제 후 목록으로
         }
     }
+
+    public async void OnClickEdit()
+    {
+        if (_currentPost == null)
+        {
+            Debug.LogWarning("게시글 정보가 없습니다.");
+            return;
+        }
+
+        if (!AccountManager.Instance.IsMyPost(_currentPost.Email))
+        {
+            Debug.LogWarning("본인 게시글만 수정할 수 있습니다.");
+            return;
+        }
+
+        // 현재 게시글 ID를 BoardManager에 저장
+        BoardManager.Instance.SetSelectedPostId(_currentPost.Id);
+
+        // 선택된 게시글을 최신화해서 편집 시 최신 데이터 사용
+        await BoardManager.Instance.RefreshPost(_currentPost.Id);
+
+        // 수정 씬으로 전환
+        SceneManager.LoadScene("Post Edit");
+    }
+
+
 }

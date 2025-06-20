@@ -12,9 +12,6 @@ public class UI_PostList : MonoBehaviour
     public Button WriteButton;
     public Button LogOutButton;
 
-    private int currentPage = 1;
-    private const int PostsPerPage = 5;
-
     private async void Start()
     {
         WriteButton.onClick.AddListener(OnClickWrite);
