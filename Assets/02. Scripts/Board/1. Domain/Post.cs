@@ -60,11 +60,9 @@ public class Post
             throw new ArgumentNullException(nameof(createdAt), "생성일은 null일 수 없습니다.");
 
         // 내용 검증
-        if (string.IsNullOrWhiteSpace(content))
-            throw new ArgumentException("게시글 내용은 비어 있을 수 없습니다.", nameof(content));
-
-        if (content.Length > MaxContentLength)
-            throw new ArgumentException($"게시글 내용은 최대 {MaxContentLength}자까지 입력할 수 있습니다.", nameof(content));
+        var contentSpec = new PostContentSpecificaion();
+        if (!contentSpec.IsSatisfiedBy(content))
+            throw new ArgumentException(contentSpec.ErrorMessage, nameof(content));
 
 
         // 코멘트 수와 좋아요 수는 음수일 수 없음

@@ -39,15 +39,10 @@ public class UI_PostEdit : MonoBehaviour
     {
         string newContent = contentInput.text.Trim();
 
-        if (string.IsNullOrWhiteSpace(newContent))
+        var contentSpec = new PostContentSpecificaion();
+        if (!contentSpec.IsSatisfiedBy(newContent))
         {
-            Debug.LogWarning("내용을 입력해주세요.");
-            return;
-        }
-
-        if (newContent.Length > Post.MaxContentLength)
-        {
-            Debug.LogWarning($"내용은 {Post.MaxContentLength}자를 넘을 수 없습니다.");
+            Debug.LogWarning(contentSpec.ErrorMessage);
             return;
         }
 

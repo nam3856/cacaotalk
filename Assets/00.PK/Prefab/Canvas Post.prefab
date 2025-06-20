@@ -118,10 +118,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b1c89c27a378a489758646c2851a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contentParent: {fileID: 0}
-  postItemPrefab: {fileID: 0}
+  contentParent: {fileID: 2838133778311683760}
+  postItemPrefab: {fileID: 6119959505218177558, guid: af0e57999e60a8841a6fd49c6257bceb, type: 3}
   WriteButton: {fileID: 5376116670715910290}
   LogOutButton: {fileID: 6349743586354355436}
+  PrevButton: {fileID: 7506142905396059306}
+  NextButton: {fileID: 3865520341596568377}
+  PageNumText: {fileID: 3977435623291636246}
 --- !u!1 &155244130219756544
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +298,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 0, y: -150}
+  m_SizeDelta: {x: 0, y: -350}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6211726253898443144
 CanvasRenderer:
@@ -723,7 +726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -150, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4508504476063091010
@@ -747,7 +750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -773,7 +776,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 5409274726795647535}
   m_OnClick:
     m_PersistentCalls:
@@ -946,7 +949,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 0}
+  m_AnchoredPosition: {x: 150, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2000419795670137707
@@ -970,7 +973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -996,7 +999,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7313801071016291611}
   m_OnClick:
     m_PersistentCalls:
@@ -1016,7 +1019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5434823399203654751
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1071,10 +1074,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5434823399203654751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1070, y: -100}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8430897111246520342
 CanvasRenderer:
@@ -1104,7 +1107,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12
+  m_text: 1...2...5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8c1f89a7e6a65484683cd3b8cbd73124, type: 2}
   m_sharedMaterial: {fileID: 4188929871752011949, guid: 8c1f89a7e6a65484683cd3b8cbd73124, type: 2}
