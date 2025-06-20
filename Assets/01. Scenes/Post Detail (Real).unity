@@ -989,10 +989,22 @@ PrefabInstance:
     - target: {fileID: 6152587325276349908, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 709514566}
+      objectReference: {fileID: 709514567}
     - target: {fileID: 6152587325276349908, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152587325276349908, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickBack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152587325276349908, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI_PostDetail, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6152587325276349908, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6272124740963263454, guid: 4836751e387fb6549bd17070f20d0ff7, type: 3}
       propertyPath: m_text

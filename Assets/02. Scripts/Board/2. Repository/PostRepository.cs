@@ -18,7 +18,8 @@ public class PostRepository
 
     public async Task<PostId> AddPost(PostDTO post)
     {
-        DocumentReference docRef = _posts.Document(post.Id.Value);
+        DocumentReference docRef = _posts.Document(); // 새 문서 생성
+        post.Id = new PostId(docRef.Id);
         await docRef.SetAsync(post);
         return post.Id;
     }
