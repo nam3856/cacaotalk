@@ -27,6 +27,10 @@ public class UI_PostDetail : MonoBehaviour
     [Header("프로필 이미지 목록")]
     public Sprite[] ProfileSprites; // 0~4 인덱스
 
+    [Header("좋아요 UI")]
+    public Toggle LikeToggle;
+    public Image CheckmarkImage;
+
     private PostDTO _currentPost;
     private CommentManager _commentManager;
 
@@ -42,6 +46,7 @@ public class UI_PostDetail : MonoBehaviour
         _commentManager.OnCommentAdded += OnCommentAdded;
         _commentManager.OnError += error => Debug.LogError(error);
         SubmitButton.onClick.AddListener(OnClickSubmit);
+        LikeToggle.onValueChanged.AddListener(OnLikeToggleChanged);
         _currentPost = BoardManager.Instance.GetSelectedPost();
         if (_currentPost != null)
         {
@@ -77,6 +82,7 @@ public class UI_PostDetail : MonoBehaviour
             ProfileImage.sprite = ProfileSprites[post.ImageIndex];
 
         await LoadCommentsAsync();
+        await SetupLikeToggleAsync(post);
 
         BoardManager.Instance.OnPostUpdated -= HandlePostUpdated;
         BoardManager.Instance.OnPostUpdated += HandlePostUpdated;
@@ -118,6 +124,43 @@ public class UI_PostDetail : MonoBehaviour
             content.SetComment(comment.AuthorNickname, comment.Content, sprite, FormatTime(comment.CreatedAt.ToDateTime()));
         }
     }
+
+    private async Task SetupLikeToggleAsync(PostDTO post)
+    {
+        // 이벤트 제거
+        LikeToggle.onValueChanged.RemoveListener(OnLikeToggleChanged);
+
+        // 현재 사용자의 좋아요 여부 확인
+        bool isLiked = await LikeManager.Instance.IsLiked(post.Id);
+
+        // 토글 상태 설정
+        LikeToggle.isOn = isLiked;
+
+        // 이벤트 다시 등록
+        LikeToggle.onValueChanged.AddListener(OnLikeToggleChanged);
+    }
+
+    //private async void OnLikeToggleChanged(bool isOn)
+    //{
+    //    // 유저가 눌렀을 때만 ToggleLike 호출
+    //    bool result = await LikeManager.Instance.ToggleLike(_currentPost.Id);
+    //    _currentPost = BoardManager.Instance.GetPostById(_currentPost.Id);
+    //    LikeCountText.text = _currentPost.LikeCount.ToString();
+    //}
+
+    private async void OnLikeToggleChanged(bool isOn)
+    {
+        if (_currentPost == null) return;
+
+        bool nowLiked = await LikeManager.Instance.ToggleLike(_currentPost.Id);
+
+        _currentPost.LikeCount += nowLiked ? 1 : -1;
+        LikeCountText.text = _currentPost.LikeCount.ToString();
+
+        BoardManager.Instance.UpdateLocalPost(_currentPost);
+    }
+
+
 
     private async void OnClickSubmit()
     {

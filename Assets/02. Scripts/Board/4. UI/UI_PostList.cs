@@ -46,6 +46,6 @@ public class UI_PostList : MonoBehaviour
     private void OnClickLogOut()
     {
         Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Login");
     }
 }

@@ -8,7 +8,10 @@ public class LikeRepository
     public DocumentReference GetLikeRef(PostId postId, string email)
     {
         // 좋아요 문서의 경로를 생성합니다.
-        return _db.Collection("likes").Document($"{postId}_{email}");
+        return _db.Collection("posts")
+          .Document(postId.Value)
+          .Collection("likes")
+          .Document(email);
     }
 
     public async Task<bool> Exists(PostId postId, string email)
@@ -19,9 +22,12 @@ public class LikeRepository
 
     public async Task AddLike(Like like)
     {
-        // 좋아요를 추가합니다.
-        await GetLikeRef(like.PostId, like.Email).SetAsync(like);
+        //await _db.Collection("likes")
+        //    .Document($"{like.PostId}_{like.Email}")
+        //    .SetAsync(like);
+        await GetLikeRef(new PostId(like.PostId), like.Email).SetAsync(like);
     }
+
 
     public async Task RemoveLike(PostId postId, string email)
     {

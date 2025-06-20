@@ -97,6 +97,18 @@ public class BoardManager : MonoBehaviourSingleton<BoardManager>
         }
     }
 
+    // 내부에서 PostDTO 업데이트 시도
+    public void UpdateLocalPost(PostDTO updated)
+    {
+        int index = cachedPosts.FindIndex(p => p.Id == updated.Id);
+        if (index >= 0)
+        {
+            cachedPosts[index] = updated;
+            OnPostUpdated?.Invoke(updated);
+        }
+    }
+
+
     // 게시글 삭제
     public async Task DeletePost(PostId postId)
     {
